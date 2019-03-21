@@ -1,0 +1,49 @@
+html, body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Montserrat', sans-serif;
+  background-color: #333333;
+  color: gainsboro;
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: 100%;
+      grid-template-columns: 100%;
+  -ms-grid-rows: 90px auto;
+      grid-template-rows: 90px auto;
+      grid-template-areas: "header" "canvas";
+  width: 100vw;
+  height: 100vh;
+}
+
+body header {
+  -ms-grid-row: 1;
+  -ms-grid-column: 1;
+  grid-area: header;
+  text-transform: uppercase;
+  font-weight: 700;
+  font-size: 1.3em;
+  -ms-grid-column-align: center;
+      justify-self: center;
+  -ms-flex-item-align: center;
+      -ms-grid-row-align: center;
+      align-self: center;
+}
+
+body #canvas {
+  -ms-grid-row: 2;
+  -ms-grid-column: 1;
+  grid-area: canvas;
+  -ms-grid-column-align: center;
+      justify-self: center;
+  -ms-flex-item-align: center;
+      -ms-grid-row-align: center;
+      align-self: center;
+}
+
+body #canvas canvas {
+  border: 1px solid gainsboro;
+}
+/*# sourceMappingURL=main.css.map */

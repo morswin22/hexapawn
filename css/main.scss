@@ -1,0 +1,43 @@
+// variables
+$font: rgb(220, 220, 220);
+$background: rgb(51,51,51);
+
+html, body{
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    background-color: $background;
+    color: $font;
+
+    display: grid;
+    grid-template-columns: 100%;
+    grid-template-rows: 90px auto;
+    grid-template-areas: 
+        "header"
+        "canvas";
+
+    width: 100vw;
+    height: 100vh;
+
+    header {
+        grid-area: header;
+        text-transform: uppercase;
+        font-weight: 700;
+        font-size: 1.3em;
+        justify-self: center;
+        align-self: center;
+    }
+
+    #canvas {
+        grid-area: canvas;
+        justify-self: center;
+        align-self: center;
+
+        canvas {
+            border: 1px solid $font;
+        }
+    }
+}
