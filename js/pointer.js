@@ -46,6 +46,7 @@ class Pointer {
             }
         }
         if (this.held) {
+            this.held.render();
             this.render(this.textures.grabbing);
         } else if (this.hovered.length == 0) {
             this.render(this.textures.default);

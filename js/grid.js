@@ -61,7 +61,9 @@ class Grid {
     renderPawns() {
         for(let side in this.pawns) {
             for (let pawn of this.pawns[side]) {
-                pawn.render();
+                if (!pawn.isHeld) {
+                    pawn.render();
+                }
             }
         }
     }
