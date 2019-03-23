@@ -21,7 +21,7 @@ class Pointer {
         this.lastPos = [mouseX, mouseY];
         this.hovered = [];
         if (!this.held) {
-            if (GameTurn == "player") {
+            if (gameTurn.value == "player") {
                 for (let pawn of pawns) {
                     if (testPointInRect(mouseX, mouseY, pawn.left, pawn.top, pawn.bottom, pawn.right)) {
                         this.hovered.push(pawn);

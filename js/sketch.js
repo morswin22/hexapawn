@@ -3,8 +3,9 @@ let grid;
 let pointer;
 
 let textures = [];
+let match_boxes;
 
-let GameTurn = "player";
+let gameTurn;
 
 function preload() {
     textures.push(loadImage('/assets/image/pointer_default.png'));
@@ -13,11 +14,14 @@ function preload() {
 
     textures.push(loadImage('/assets/image/brain_pawn.png'));
     textures.push(loadImage('/assets/image/player_pawn.png'));
+
+    match_boxes = loadJSON('/assets/match_boxes.json');
 }
 
 function setup() {
     let canvas = createCanvas(600, 800);
-    canvas.parent(select('#canvas'))
+    canvas.parent(select('#canvas'));
+    textFont('Montserrat');
 
     let baseColor = color(255,114,114);
 
@@ -28,7 +32,8 @@ function setup() {
         [{isPlayer:!0},{isPlayer:!0},{isPlayer:!0}],
         [{isBase:!0,color: baseColor},{isBase:!0,color: baseColor},{isBase:!0,color: baseColor}]
     ]);
-    brain = new Brain();
+    brain = new Brain(match_boxes);
+    gameTurn = new GameTurn();
 
     pointer = new Pointer([textures[0],textures[1],textures[2]]);
 }
@@ -40,4 +45,6 @@ function draw() {
     grid.render();
 
     pointer.update(grid.pawns.player);
+
+    gameTurn.render();
 }

@@ -14,6 +14,7 @@ class Grid {
     }
 
     insert(data) {
+        this.insertedData = data;
         for (let x in this.data) {
             for (let y in this.data[x]) {
                 this.data[x][y] = data[y][x];
@@ -22,6 +23,11 @@ class Grid {
                 if (data[y][x].isPlayer) this.pawns.player.push(new Pawn(x, y, 'player'));
             }
         }
+    }
+
+    restart() {
+        this.pawns = {brain:[], player:[]};
+        this.insert(this.insertedData);
     }
 
     set(x, y, value) {

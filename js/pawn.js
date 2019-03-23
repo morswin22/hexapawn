@@ -43,7 +43,7 @@ class Pawn {
                 let isAttacking = false;
                 for (let brainPawn of grid.pawns.brain) {
                     if (brainPawn.col == inCell.x && brainPawn.row == inCell.y) {
-                        isAttacking = true;
+                        isAttacking = brainPawn;
                     }
                 }
                 if (isAttacking) {
@@ -51,14 +51,20 @@ class Pawn {
                     if (this.row - inCell.y == 1 && abs(this.col - inCell.x) == 1) {
                         this.col = inCell.x;
                         this.row = inCell.y;
-                        GameTurn = 'toBrain';
                         // todo: kill that pawn
+                        let pawnI = grid.pawns.brain.indexOf(isAttacking);
+                        grid.pawns.brain.splice(pawnI,1);
+                        if (this.row == 0) {
+                            gameTurn.value = 'playerWon';
+                        } else {
+                            gameTurn.next();
+                        }
                     }
                 } else {
                     // can only move straight one cell
                     if (this.row - inCell.y == 1 && this.col - inCell.x == 0) {
                         this.row = inCell.y;
-                        GameTurn = 'toBrain';
+                        gameTurn.next();
                     }
                 }
                 this.destination(this.col*grid.width+(grid.width/2), this.row*grid.height+(grid.height/2));
@@ -67,6 +73,9 @@ class Pawn {
             // out of screen
             this.destination(this.col*grid.width+(grid.width/2), this.row*grid.height+(grid.height/2));
         }
+
+        // check if player has won
+        
     }
 
     update() {
@@ -83,6 +92,10 @@ class Pawn {
                 this.lerpAmt++;
             } else {
                 this.originPoint = undefined;
+                if (this.onDestinationReached) {
+                    this.onDestinationReached();
+                    this.onDestinationReached = undefined;
+                }
             }
         }
     }
