@@ -54,8 +54,6 @@ class Brain {
             if (playerMatches && brainMatches) {
                 return true;
             }
-        } else {
-            console.log('Not matched, coz invalid number of pawns');
         }
         return false;
     }
@@ -117,7 +115,7 @@ class Brain {
                 break;
             }
         }
-        if (!possible.length) {
+        if (!possible.length && possible.length != 0) {
             // pick possible move
             let picked;
             let pickedArray;
@@ -126,6 +124,7 @@ class Brain {
                 pickedArray = this.picked.concat([{set:setId,move:possible.moves.indexOf(picked)}]);
             } while(this.inLossHistory(pickedArray))
             this.picked = pickedArray;
+            this.current++;
 
             picked = this.splitMove(picked);
             for (let pawn of grid.pawns.brain) {
@@ -133,7 +132,11 @@ class Brain {
                     pawn.col = picked.to.x;
                     pawn.row = picked.to.y;
                     pawn.onDestinationReached = function() {
-                        gameTurn.next();
+                        if (picked.to.y == 2) {
+                            gameTurn.value = "brainWon";
+                        } else {
+                            gameTurn.next();
+                        }
                     }.bind(pawn);
                     pawn.destination(pawn.col*grid.width+(grid.width/2), pawn.row*grid.height+(grid.height/2));
 
@@ -146,9 +149,11 @@ class Brain {
                     }
                 }
             }
-
         } else {
-            console.log('## No Matches! ##');
+            if (this.current == 2) {
+                gameTurn.value = 'playerWon';
+            }
+            console.log('## No Matches! ##', this.current);
         }
     }
 
@@ -171,7 +176,7 @@ class Brain {
     inLossHistory(picked) {
         for (let elem of this.history) {
             if (elem.loss) {
-                if (elem.picked == picked) {
+                if (JSON.stringify(elem.picked) == JSON.stringify(picked)) {
                     return true;
                 }
             }

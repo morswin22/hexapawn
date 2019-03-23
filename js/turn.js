@@ -24,6 +24,36 @@ class GameTurn {
                 break;
             case "player":
                 this.displayText = "";
+                // check if player has lost
+                let canMove = false;
+                for (let playerPawn of grid.pawns.player) {
+                    let nextY = parseInt(playerPawn.row) - 1;
+                    let nextXs = [0,1,2];
+                    if (playerPawn.col == 0) nextXs.splice(2,1);
+                    if (playerPawn.col == 2) nextXs.splice(0,1);
+                    let pawnCanMove = true;
+                    for (let nextX of nextXs) {
+                        let canMoveForwards = true;
+                        let canMoveDiagonally = false;
+                        for(let brainPawn of grid.pawns.brain) {
+                            if (nextX != playerPawn.col && brainPawn.row == nextY && brainPawn.col == nextX) {
+                                canMoveDiagonally = true;
+                            }
+                            if (nextX == playerPawn.col && brainPawn.row == nextY && brainPawn.col == nextX) {
+                                canMoveForwards = false;
+                            }
+                        }
+                        if (!(canMoveForwards || canMoveDiagonally)) {
+                            pawnCanMove = false;
+                        }
+                    }
+                    if (pawnCanMove) {
+                        canMove = true;
+                    }
+                }
+                if (!canMove) {
+                    this.value = "brainWon";
+                }
                 break;
             case "toBrain":
                 this.displayText = "Enemy's turn!";
@@ -36,6 +66,13 @@ class GameTurn {
             case "playerWon":
                 this.displayText = "You have won!";
                 brain.loss();
+                setTimeout(()=>{
+                    this.value = "gameReset";
+                }, 1000);
+                break;
+            case "brainWon":
+                this.displayText = "Enemy have won!";
+                brain.win();
                 setTimeout(()=>{
                     this.value = "gameReset";
                 }, 1000);

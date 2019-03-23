@@ -73,9 +73,6 @@ class Pawn {
             // out of screen
             this.destination(this.col*grid.width+(grid.width/2), this.row*grid.height+(grid.height/2));
         }
-
-        // check if player has won
-        
     }
 
     update() {
