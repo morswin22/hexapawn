@@ -38,6 +38,18 @@ class Grid {
         }
     }
 
+    update() {
+        this.updatePawns();
+    }
+
+    updatePawns() {
+        for(let side in this.pawns) {
+            for (let pawn of this.pawns[side]) {
+                pawn.update();
+            }
+        }
+    }
+
     render() {
         this.renderGrid();
         this.renderPawns();

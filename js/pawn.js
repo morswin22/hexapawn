@@ -1,3 +1,5 @@
+const PawnAmtMax = 10;
+
 class Pawn {
     constructor(x,y,side) {
         this.col = x;
@@ -11,6 +13,14 @@ class Pawn {
 
         if (side == 'player') this.isPlayer=!0;
         if (side == 'brain') this.isBrain=!0;
+
+        this.destinationPoint = {x:this.x,y:this.y};
+    }
+
+    destination(x, y) {
+        this.originPoint = {x:this.x,y:this.y};
+        this.lerpAmt = 0;
+        this.destinationPoint = {x,y};
     }
 
     release() {
@@ -27,8 +37,7 @@ class Pawn {
         if (inCell) {
             if (this.col == inCell.x && this.row == inCell.y) {
                 // same cell
-                this.x = this.col*grid.width+(grid.width/2);
-                this.y = this.row*grid.height+(grid.height/2);
+                this.destination(this.col*grid.width+(grid.width/2), this.row*grid.height+(grid.height/2));
             } else {
                 // check if can move
                 let isAttacking = false;
@@ -52,9 +61,11 @@ class Pawn {
                         GameTurn = 'toBrain';
                     }
                 }
-                this.x = this.col*grid.width+(grid.width/2);
-                this.y = this.row*grid.height+(grid.height/2);
+                this.destination(this.col*grid.width+(grid.width/2), this.row*grid.height+(grid.height/2));
             }
+        } else {
+            // out of screen
+            this.destination(this.col*grid.width+(grid.width/2), this.row*grid.height+(grid.height/2));
         }
     }
 
@@ -63,10 +74,20 @@ class Pawn {
         this.right = this.x + this.width/2;
         this.top = this.y - this.height/2;
         this.bottom = this.y + this.height/2;
+
+        // if origin point is set, then lerp to the destination
+        if (this.originPoint) {
+            if (this.lerpAmt <= PawnAmtMax) {
+                this.x = lerp(this.originPoint.x, this.destinationPoint.x, this.lerpAmt/PawnAmtMax);
+                this.y = lerp(this.originPoint.y, this.destinationPoint.y, this.lerpAmt/PawnAmtMax);
+                this.lerpAmt++;
+            } else {
+                this.originPoint = undefined;
+            }
+        }
     }
 
     render() {
-        fill(0,0,0);
         imageMode(CENTER);
         image((this.isBrain) ? textures[3] : textures[4], this.x, this.y, this.width, this.height);
     }

@@ -23,7 +23,6 @@ class Pointer {
         if (!this.held) {
             if (GameTurn == "player") {
                 for (let pawn of pawns) {
-                    pawn.update();
                     if (testPointInRect(mouseX, mouseY, pawn.left, pawn.top, pawn.bottom, pawn.right)) {
                         this.hovered.push(pawn);
                         if (mouseIsPressed) {
@@ -56,6 +55,7 @@ class Pointer {
     }
 
     render(texture) {
+        imageMode(CORNER);
         image(texture, mouseX + PointerOffset, mouseY, PointerSize, PointerSize);
     }
 }

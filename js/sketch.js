@@ -36,7 +36,7 @@ function setup() {
 function draw() {
     background(51);
 
-
+    grid.update();
     grid.render();
 
     pointer.update(grid.pawns.player);
