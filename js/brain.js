@@ -170,9 +170,10 @@ class Brain {
     }
 
     inLossHistory(picked) {
+        picked = JSON.stringify(picked);
         for (let elem of this.history) {
             if (elem.loss) {
-                if (JSON.stringify(elem.picked) == JSON.stringify(picked)) {
+                if (JSON.stringify(elem.picked) == picked) {
                     return true;
                 }
             }
