@@ -105,13 +105,9 @@ class Brain {
         let possible = this.tree[this.current];
         let setId;
         for (let set in possible) {
-            if (this.match(possible[set])) {
+            if (this.match(possible[set]) || this.match(this.flip(possible[set]))) {
                 possible = possible[set];
-                setId = parseInt(set)+1;
-                break;
-            } else if (this.match(this.flip(possible[set]))) {
-                possible = possible[set];
-                setId = -(parseInt(set)+1);
+                setId = set;
                 break;
             }
         }
