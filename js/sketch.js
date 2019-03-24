@@ -4,6 +4,7 @@ let pointer;
 
 let textures = [];
 let match_boxes;
+let brains = [];
 
 let gameTurn;
 
@@ -16,6 +17,8 @@ function preload() {
     textures.push(loadImage('/assets/image/player_pawn.png'));
 
     match_boxes = loadJSON('/assets/match_boxes.json');
+
+    brains.push(loadJSON('/assets/brains/expert.json'));
 }
 
 function setup() {
@@ -33,6 +36,7 @@ function setup() {
         [{isBase:!0,color: baseColor},{isBase:!0,color: baseColor},{isBase:!0,color: baseColor}]
     ]);
     brain = new Brain(match_boxes);
+    // brain.import(brains[0]);
     gameTurn = new GameTurn();
 
     pointer = new Pointer([textures[0],textures[1],textures[2]]);

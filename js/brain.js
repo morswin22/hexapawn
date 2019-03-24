@@ -179,4 +179,19 @@ class Brain {
         }
         return false;
     }
+
+    export() {
+        let lossHistory = [];
+        for (let elem of this.history) {
+            if (elem.loss) {
+                lossHistory.push(elem);
+            }
+        }
+        let d = new Date();
+        saveJSON(lossHistory, `Brain from ${d.getHours()};${d.getMinutes()} ${d.getDate()}.${d.getMonth()}.${d.getFullYear()}`, true);
+    }
+
+    import(json) {
+        this.history = Object.values(json);
+    }
 }
