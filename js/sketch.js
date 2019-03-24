@@ -11,6 +11,12 @@ let buttons = [];
 
 let expertLoaded;
 
+let games = 0;
+let wins = 0; let winHeight = 1;
+let loses = 0; let loseHeight = 1;
+let winloseAmt = 0;
+let winloseAmtMax = 10;
+
 function preload() {
     textures.push(loadImage('/assets/image/pointer_default.png'));
     textures.push(loadImage('/assets/image/pointer_grab.png'));
@@ -21,6 +27,7 @@ function preload() {
 
     textures.push(loadImage('/assets/image/expert.png'));
     textures.push(loadImage('/assets/image/derpy.png'));
+    textures.push(loadImage('/assets/image/player.png'));
 
     match_boxes = loadJSON('/assets/match_boxes.json');
 
@@ -48,6 +55,7 @@ function setup() {
 
     expertLoaded = false;
     buttons.push(new Button(500,760,120,40,"Load expert", function(){
+        games = 0; wins = 0; loses = 0;
         if (!expertLoaded) {
             this.text = "Reset brain";
             brain.import(brains[0]);
@@ -73,6 +81,22 @@ function draw() {
     image(expertLoaded ? textures[6] : textures[5], 500, 670, 110, 110);
     pop();
     for(let button of buttons) button.render();
+
+    push()
+    winloseAmt += 0.3;
+    if (winloseAmt > winloseAmtMax) { 
+        winHeight = (games > 0) ? wins/games * 120 : 1;
+        loseHeight = (games > 0) ? loses/games * 120 : 1;
+        winloseAmt = winloseAmtMax;
+    }
+    imageMode(CENTER);
+    noStroke();
+    fill(100, 217, 98);
+    rect(55, 740, 20, wins/games > 0 ? -(lerp(winHeight, wins/games * 120, winloseAmt/winloseAmtMax)) : 1);
+    image(textures[7], 65, 770, 32, 32);
+    rect(125, 740, 20, loses/games > 0 ? -(lerp(loseHeight, loses/games * 120, winloseAmt/winloseAmtMax)) : 1);
+    image(!expertLoaded ? textures[6] : textures[5], 135, 770, 32, 32);
+    pop()
 
     pointer.update(grid.pawns.player);
 

@@ -157,6 +157,13 @@ class Brain {
             loss: !!loss,
             picked: this.picked
         });
+        winloseAmt = 0;
+        games++;
+        if (loss) {
+            wins++;
+        } else {
+            loses++;
+        }
     }
 
     loss() {
