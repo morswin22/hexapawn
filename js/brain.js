@@ -111,12 +111,14 @@ class Brain {
                 break;
             }
         }
-        if (!possible.length && possible.length != 0) {
+        if (possible && !possible.length && possible.length != 0) {
             // pick possible move
             let picked;
             let pickedArray;
+            let randomisedMoves = shuffle(possible.moves);
             do {
-                picked = random(possible.moves);
+                if (randomisedMoves.length == 0) break; // infinity loop prevention
+                picked = randomisedMoves.pop();
                 pickedArray = this.picked.concat([{set:setId,move:possible.moves.indexOf(picked)}]);
             } while(this.inLossHistory(pickedArray))
             this.picked = pickedArray;
@@ -146,10 +148,7 @@ class Brain {
                 }
             }
         } else {
-            if (this.current == 2) {
-                gameTurn.value = 'playerWon';
-            }
-            console.log('## No Matches! ##', this.current);
+            gameTurn.value = 'playerWon';
         }
     }
 
