@@ -20,7 +20,7 @@ class GameTurn {
         switch(this.gameTurnValue) {
             case "toPlayer":
                 this.displayText = "Your's turn!";
-                this.textFade();
+                this.textFade(this.next.bind(this));
                 break;
             case "player":
                 this.displayText = "";
@@ -57,7 +57,7 @@ class GameTurn {
                 break;
             case "toBrain":
                 this.displayText = "Enemy's turn!";
-                this.textFade();
+                this.textFade(this.next.bind(this));
                 break;
             case "brain":
                 this.displayText = "";
@@ -82,6 +82,12 @@ class GameTurn {
                 grid.restart();
                 this.current = -1;
                 this.next();
+                break;
+            case "brainLoad":
+                this.displayText = "Loading brain memory";
+                this.textFade(function() {
+                    this.value = "gameReset";
+                }.bind(this));
                 break;
         }
     }
@@ -108,7 +114,7 @@ class GameTurn {
         text(this.displayText, width/2,height*3/8);
     }
 
-    textFade() {
+    textFade(endWith) {
         this.alpha = 0;
         setTimeout(()=>{
             this.alphaFrom = 0;
@@ -124,7 +130,7 @@ class GameTurn {
                     this.alphaMaxAction = () => {
                         this.alpha = undefined;
                         this.alphaMax = undefined;
-                        this.next();
+                        endWith();
                     }
                 }, 500);
             }

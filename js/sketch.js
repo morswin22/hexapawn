@@ -7,6 +7,9 @@ let match_boxes;
 let brains = [];
 
 let gameTurn;
+let buttons = [];
+
+let expertLoaded;
 
 function preload() {
     textures.push(loadImage('/assets/image/pointer_default.png'));
@@ -15,6 +18,9 @@ function preload() {
 
     textures.push(loadImage('/assets/image/brain_pawn.png'));
     textures.push(loadImage('/assets/image/player_pawn.png'));
+
+    textures.push(loadImage('/assets/image/expert.png'));
+    textures.push(loadImage('/assets/image/derpy.png'));
 
     match_boxes = loadJSON('/assets/match_boxes.json');
 
@@ -36,10 +42,24 @@ function setup() {
         [{isBase:!0,color: baseColor},{isBase:!0,color: baseColor},{isBase:!0,color: baseColor}]
     ]);
     brain = new Brain(match_boxes);
-    // brain.import(brains[0]);
     gameTurn = new GameTurn();
 
     pointer = new Pointer([textures[0],textures[1],textures[2]]);
+
+    expertLoaded = false;
+    buttons.push(new Button(500,760,120,40,"Load expert", function(){
+        if (!expertLoaded) {
+            this.text = "Reset brain";
+            brain.import(brains[0]);
+            gameTurn.value = "brainLoad";
+            expertLoaded = true;
+        } else {
+            this.text = "Load expert";
+            brain.import([]);
+            gameTurn.value = "brainLoad";
+            expertLoaded = false;
+        }
+    }));
 }
 
 function draw() {
@@ -48,7 +68,17 @@ function draw() {
     grid.update();
     grid.render();
 
+    push();
+    imageMode(CENTER);
+    image(expertLoaded ? textures[6] : textures[5], 500, 670, 110, 110);
+    pop();
+    for(let button of buttons) button.render();
+
     pointer.update(grid.pawns.player);
 
     gameTurn.render();
+}
+
+function mousePressed() {
+    for(let button of buttons) button.check();
 }
